@@ -19,3 +19,7 @@ FormWave3D is a web platform offering on-demand 3D printing services for profess
 - Users can upload STL files for printing.
 - The Admin can view and manage all orders.
 - The Admin can download STL files for processing.
+
+## Figma design
+
+Link: https://www.figma.com/design/iNSRPaCMw0rspWjbAB0WcI/FormWave3D?node-id=0-1&t=4A7ObiXSA9hO4M3p-1
