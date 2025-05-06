@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormWave3D</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            padding: 40px;
+            background-color: white;
+            min-height: 100vh;
+            text-align: center;
+        }
+        h1 {
+            margin: 0 0 20px;
+            font-size: 24px;
+        }
+        .upload-area {
+            border: 2px dashed #ccc;
+            padding: 40px;
+            margin-bottom: 20px;
+            background-color: #f0f0f0;
+        }
+        input[type="file"] {
+            width: 100%;
+            padding: 10px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Choose only one file!</h1>
+    <div class="upload-area">
+        <input type="file" accept=".stl" onchange="this.nextElementSibling.value = this.files[0].name">
+        <p>Choose file to upload or drag and drop here</p>
+    </div>
+    <button onclick="window.location.href='type.html'">Next</button>
+</div>
+</body>
+</html>

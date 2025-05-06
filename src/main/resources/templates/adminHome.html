@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FormWave3D</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 200px;
+      background-color: #fff;
+      padding: 20px;
+      border-right: 1px solid #ddd;
+    }
+    .content {
+      flex: 1;
+      padding: 40px;
+      background-color: white;
+      text-align: center;
+    }
+    .sidebar a {
+      display: block;
+      margin: 10px 0;
+      color: #000;
+      text-decoration: none;
+    }
+    .sidebar a.active {
+      background-color: #ddd;
+    }
+    button {
+      padding: 10px;
+      background-color: #000;
+      color: white;
+      border: none;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 20px;
+    }
+    .order-item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 20px 0;
+      padding: 20px;
+      border: 1px solid #ddd;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .order-image {
+      width: 100px;
+      height: 100px;
+      background-color: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+      margin-right: 20px;
+    }
+    .order-details {
+      text-align: left;
+      flex: 1;
+    }
+    .order-details button {
+      width: auto;
+      padding: 5px 10px;
+      margin-top: 10px;
+    }
+    .progress {
+      width: 80%;
+      border: 1px solid #ccc;
+      margin: 10px 0;
+    }
+    .progress div {
+      height: 10px;
+      background-color: #ccc;
+      width: 25%;
+    }
+    .status {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 10px;
+    }
+    .status div {
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <h2>FormWave3D<br>Admin456</h2>
+  <a href="adminHome.html" class="active">Dashboard</a>
+  <button onclick="window.location.href='index.html'">Log out</button>
+</div>
+<div class="content">
+  <h1>Orders</h1>
+  <div class="order-item">
+    <div class="order-image">Image Placeholder</div>
+    <div class="order-details">
+      <p>21/04/2025</p>
+      <div class="progress"><div></div></div>
+      <div class="status">
+        <div>Payment successful ✓</div>
+        <div>Order Prepared</div>
+        <div>Shipping</div>
+        <div>Order completed</div>
+      </div>
+      <button>Mark the next step</button>
+    </div>
+  </div>
+  <div class="order-item">
+    <div class="order-image">Image Placeholder</div>
+    <div class="order-details">
+      <p>14/03/2025</p>
+      <div class="progress"><div style="width: 50%;"></div></div>
+      <div class="status">
+        <div>Payment successful ✓</div>
+        <div>Order Prepared ✓</div>
+        <div>Shipping</div>
+        <div>Order completed</div>
+      </div>
+      <button>Mark the next step</button>
+    </div>
+  </div>
+  <div class="order-item">
+    <div class="order-image">Image Placeholder</div>
+    <div class="order-details">
+      <p>20/12/2024</p>
+      <div class="progress"><div style="width: 75%;"></div></div>
+      <div class="status">
+        <div>Payment successful ✓</div>
+        <div>Order Prepared ✓</div>
+        <div>Shipping ✓</div>
+        <div>Order completed</div>
+      </div>
+      <button>Mark the next step</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>

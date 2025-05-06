@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormWave3D</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            padding: 40px;
+            background-color: white;
+            min-height: 100vh;
+            display: flex;
+        }
+        .left, .right {
+            flex: 1;
+            padding: 10px;
+        }
+        .image-placeholder {
+            width: 100px;
+            height: 100px;
+            background-color: #ddd;
+            margin: 10px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+        .left p {
+            margin: 5px 0;
+        }
+        .right input, .right select {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #000;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .secondary {
+            background-color: #ddd;
+            color: #000;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="left">
+        <h1>$129</h1>
+        <div class="image-placeholder">Image Placeholder</div>
+        <p>Print 1 <select><option>Qty 1</option></select> $65.00</p>
+        <div class="image-placeholder">Image Placeholder</div>
+        <p>Print 2 <select><option>Qty 2</option></select> $64.00</p>
+        <p>Subtotal $129</p>
+        <p>Shipping (5-7 business days) Free</p>
+        <p>Total due $129</p>
+    </div>
+    <div class="right">
+        <h2>Shipping information</h2>
+        <input type="email" placeholder="Email">
+        <input type="text" placeholder="Shipping address">
+        <input type="text" placeholder="Name">
+        <select><option>Country</option></select>
+        <h2>Shipping method</h2>
+        <label><input type="radio" name="shipping"> Free Shipping</label> <span>Free</span><br>
+        <label><input type="radio" name="shipping"> Next Air</label> <span>$15</span>
+        <h2>Payment method</h2>
+        <select><option>Card</option><option>Afterpay</option></select>
+        <input type="text" placeholder="Card information 1234 1234 1234 1234">
+        <input type="text" placeholder="MM/YY">
+        <input type="text" placeholder="CVC">
+        <label><input type="checkbox"> Billing info is same as shipping</label>
+        <button>Pay</button>
+        <button class="secondary" onclick="window.location.href='color.html'">Back</button>
+        <p>Free returns and exchanges</p>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FormWave3D</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      padding: 40px;
+      background-color: white;
+      min-height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      margin: 0 0 20px;
+      font-size: 24px;
+    }
+    .type-options {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+    }
+    .type-option {
+      border: 1px solid #ddd;
+      padding: 10px;
+    }
+    .image-placeholder {
+      width: 100%;
+      height: 100px;
+      background-color: #ddd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #666;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #000;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 20px;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Choose filament type:</h1>
+  <div class="type-options">
+    <div class="type-option">
+      <div class="image-placeholder">Image Placeholder</div>
+      <p>PLA (Polylactic Acid): PLA is a biodegradable plastic made from renewable resources like corn starch. It is easy to print with, affordable, and ideal for prototypes, models, and non-functional parts. However, it's less heat-resistant and not very flexible.</p>
+    </div>
+    <div class="type-option">
+      <div class="image-placeholder">Image Placeholder</div>
+      <p>PETG (Polyethylene Terephthalate Glycol): PETG combines strength, flexibility, and chemical resistance, making it a popular choice for functional parts. It's tougher than PLA and handles outdoor conditions better while still being easy to print.</p>
+    </div>
+    <div class="type-option">
+      <div class="image-placeholder">Image Placeholder</div>
+      <p>TPU (Thermoplastic Polyurethane): TPU is a flexible, rubber-like material known for its elasticity and durability. It's perfect for making bendable parts like phone cases, gaskets, and wearable items, although it requires slower printing speeds.</p>
+    </div>
+  </div>
+  <button onclick="window.location.href='newOrder.html'">Back</button>
+</div>
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FormWave3D</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            display: flex;
+            min-height: 100vh;
+        }
+        .sidebar {
+            width: 200px;
+            background-color: #fff;
+            padding: 20px;
+            border-right: 1px solid #ddd;
+        }
+        .content {
+            flex: 1;
+            padding: 40px;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+        }
+        .title-section {
+            width: 100%;
+            text-align: center;
+        }
+        .text-image-section {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            width: 100%;
+        }
+        .text-section {
+            max-width: 600px;
+        }
+        .image-section {
+            max-width: 400px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .image-placeholder {
+            width: 100%;
+            height: 200px;
+            background-color: #ddd;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+        .sidebar a {
+            display: block;
+            margin: 10px 0;
+            color: #000;
+            text-decoration: none;
+        }
+        .sidebar a.active {
+            background-color: #ddd;
+        }
+        .auth-links a {
+            display: block;
+            margin: 10px 0;
+            color: #000;
+            text-decoration: none;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="sidebar">
+    <h2>FormWave3D</h2>
+    <a href="index.html" class="active">Home</a>
+    <div class="auth-links">
+        <a href="signIn.html">Sign in</a>
+        <a href="registration.html">Register</a>
+    </div>
+</div>
+<div class="content">
+    <div class="title-section">
+        <h1>FormWave3D<br>Your ideas are now real!</h1>
+    </div>
+    <div class="text-image-section">
+        <div class="text-section">
+            <p>At FormWave3D, we make 3D printing accessible and hassle-free. Whether you're a designer, engineer, or hobbyist, simply upload your STL files, select your material, and get an instant quote. Our seamless platform connects you with high-quality, on-demand printing services — with real-time order tracking and fast delivery. Start creating today, and turn your ideas into tangible, custom-made products.</p>
+        </div>
+        <div class="image-section">
+            <div class="image-placeholder">Image 1 Placeholder</div>
+            <div class="image-placeholder">Image 2 Placeholder</div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
