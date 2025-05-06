@@ -23,3 +23,7 @@ FormWave3D is a web platform offering on-demand 3D printing services for profess
 ## Figma design
 
 Link: https://www.figma.com/design/iNSRPaCMw0rspWjbAB0WcI/FormWave3D?node-id=0-1&t=4A7ObiXSA9hO4M3p-1
+
+## Trello board
+
+Link: https://trello.com/invite/b/67f52cb69539b9105fd1655f/ATTIc6f0eb0889a04b071848841e264187b96AE04C16/kanban-template
