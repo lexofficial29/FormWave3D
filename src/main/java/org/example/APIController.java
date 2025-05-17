@@ -1,17 +1,17 @@
 package org.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-
-
-@RequestMapping("/api/users")
+@RequestMapping("/api")
 public class APIController {
 
     @Autowired
@@ -23,29 +23,83 @@ public class APIController {
     @Autowired
     private JwtUtil jwtUtil;
 
-    @GetMapping
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @Autowired
+    private FileStorageService fileStorageService;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> loginUser(@RequestBody User user) {
+        User foundUser = userRepository.findByEmail(user.getEmail());
+        if (foundUser == null || !passwordEncoder.matches(user.getPassword(), foundUser.getPassword())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email or password");
+        }
+
+        String token = jwtUtil.generateToken(foundUser);
+
+        return ResponseEntity.ok(new AuthResponse(token, foundUser.getEmail(), foundUser.getRole()));
     }
 
-    @PostMapping
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getUsers() {
+        return ResponseEntity.ok(userRepository.findAll());
+    }
+
+    @PostMapping("/register")
     public ResponseEntity<?> addUser(@RequestBody User user) {
         User newUser = new User();
         newUser.setEmail(user.getEmail());
-        String encodedPassword = passwordEncoder.encode(user.getPassword());
-        newUser.setPassword(encodedPassword);
-
-        // Assign role if passed, else default
-        if (user.getRole() != null) {
-            newUser.setRole(user.getRole());
-        }
+        newUser.setPassword(passwordEncoder.encode(user.getPassword()));
+        newUser.setRole(user.getRole() != null ? user.getRole() : "USER");
 
         User savedUser = userRepository.save(newUser);
 
         String token = jwtUtil.generateToken(savedUser);
 
-        // Return token and user info (email and role)
         return ResponseEntity.ok(new AuthResponse(token, savedUser.getEmail(), savedUser.getRole()));
+    }
+
+    @PostMapping("/upload")
+    public ResponseEntity<String> handleFileUpload(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("filamentType") String filamentType,
+            @RequestParam("filamentColor") String filamentColor,
+            @RequestParam("userId") Long userId) {
+        try {
+            // Validate inputs
+            if (file.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("File is required");
+            }
+            if (filamentType == null || filamentType.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Filament type is required");
+            }
+            if (filamentColor == null || filamentColor.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Filament color is required");
+            }
+
+            // Find user
+            User user = userRepository.findById(userId)
+                    .orElseThrow(() -> new RuntimeException("User not found"));
+
+            // Store file
+            String filePath = fileStorageService.storeFile(file);
+
+            // Create item (optional, depending on your requirements)
+            Item item = new Item(file.getOriginalFilename(), "3D print item");
+
+            // Create order
+            UserOrder order = new UserOrder();
+            order.setFilePath(filePath);
+            order.setFilamentType(filamentType);
+            order.setFilamentColor(filamentColor);
+            order.setItems(List.of(item));
+
+            // Add order to user's orders
+            user.getOrders().add(order);
+            userRepository.save(user);
+
+            return ResponseEntity.ok("File uploaded and order saved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + e.getMessage());
+        }
     }
 
     public static class AuthResponse {
@@ -59,11 +113,12 @@ public class APIController {
             this.role = role;
         }
 
-        // getters and setters
         public String getToken() { return token; }
         public void setToken(String token) { this.token = token; }
+
         public String getEmail() { return email; }
         public void setEmail(String email) { this.email = email; }
+
         public String getRole() { return role; }
         public void setRole(String role) { this.role = role; }
     }

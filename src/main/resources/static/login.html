@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FormWave3D</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      padding: 40px;
+      background-color: white;
+      min-height: 100vh;
+      text-align: center;
+    }
+    h1 {
+      margin: 0 0 20px;
+      font-size: 24px;
+    }
+    .form-group {
+      margin-bottom: 15px;
+      text-align: left;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #000;
+      color: white;
+      border: none;
+      cursor: pointer;
+      max-width: 400px;
+    }
+    button.secondary {
+      background-color: #ddd;
+      color: #000;
+    }
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      padding: 10px;
+      max-width: 400px;
+      margin: 10px auto;
+    }
+    .google-btn img {
+      margin-right: 10px;
+    }
+    p {
+      font-size: 12px;
+      color: #777;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>FormWave3D<br>Sign In</h1>
+  <div class="form-group">
+    <input type="email" placeholder="Email" id="email">
+  </div>
+  <div class="form-group">
+    <input type="password" placeholder="Password" id="password">
+  </div>
+  <button onclick="login()">Sign In</button>
+  <p>Forgot password?</p>
+  <button class="secondary" onclick="window.location.href='registration.html'">Or Sign Up</button>
+  <div class="google-btn">
+    <img src="https://www.google.com/favicon.ico" alt="Google" width="20" height="20">
+    <span>Google</span>
+  </div>
+  <p>By clicking continue, you agree to our Terms of Service and Privacy Policy</p>
+</div>
+</body>
+</html>
+
+<script src="https://cdn.jsdelivr.net/npm/notiflix@3.2.6/dist/notiflix-aio-3.2.6.min.js"></script>
+<script>
+
+  function login() {
+    let email = document.getElementById("email").value;
+    let password = document.getElementById("password").value;
+
+    if (!email || !password) {
+      Notiflix.Notify.warning("Please enter both email and password.");
+      return;
+    }
+
+    let data = { email: email, password: password };
+
+    Notiflix.Loading.standard('Signing in...');
+
+    fetch('http://localhost:8080/api/login', {  // make sure this is your actual login endpoint
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (!response.ok) throw new Error('Login failed: ' + response.statusText);
+      return response.json();
+    })
+    .then(user => {
+      localStorage.setItem('token', user.token);
+      Notiflix.Loading.remove();
+      Notiflix.Notify.success('Login successful! Redirecting...');
+
+      setTimeout(() => {
+        if (user.role === 'admin') {
+          window.location.href = 'adminHome.html';
+        } else {
+          window.location.href = 'userHome.html';
+        }
+      }, 1000);
+    })
+    .catch(error => {
+      Notiflix.Loading.remove();
+      console.error('Error:', error);
+      Notiflix.Notify.failure('Login failed: ' + error.message);
+    });
+  }
+  window.onload = function() {
+    let token = localStorage.getItem('token');
+      if (token) {
+        let payload = JSON.parse(atob(token.split('.')[1]));
+        let role = payload.role;
+        if (role === 'admin') {
+          window.location.href = 'adminHome.html';
+        } else {
+          window.location.href = 'userHome.html';
+        }
+      }
+  }
+</script>
