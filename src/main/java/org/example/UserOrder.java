@@ -1,11 +1,10 @@
 package org.example;
 
 import jakarta.persistence.*;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class User {
+public class UserOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -13,17 +12,18 @@ public class User {
 
     private String email;
     private String password;
-    private String role = "default";
+    private String role;
 
     @OneToMany(cascade = CascadeType.ALL)
-    private List<UserOrder> orders = new ArrayList<>();
+    private List<Item> items;
 
-    public User() {}
+    public UserOrder() {}
 
-    public User(String email, String password) {
+    public UserOrder(String email, String password, String role, List<Item> items) {
         this.email = email;
         this.password = password;
-        this.orders = new ArrayList<>();
+        this.role = role;
+        this.items = items;
     }
 
     // Getters and setters
@@ -39,6 +39,6 @@ public class User {
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
 
-    public List<UserOrder> getOrders() { return orders; }
-    public void setOrders(List<UserOrder> orders) { this.orders = orders; }
+    public List<Item> getItems() { return items; }
+    public void setItems(List<Item> items) { this.items = items; }
 }

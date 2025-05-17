@@ -71,12 +71,12 @@
     <h1>FormWave3D<br>Create an account</h1>
     <p>Enter your email to sign up for this app</p>
     <div class="form-group">
-        <input type="email" placeholder="Email">
+        <input type="email" placeholder="Email" id="email">
     </div>
     <div class="form-group">
-        <input type="password" placeholder="Password">
+        <input type="password" placeholder="Password" id="password">
     </div>
-    <button onclick="window.location.href='userHome.html'">Register</button>
+    <button onclick="register()">Register</button>
     <button class="secondary" onclick="window.location.href='signIn.html'">Or Sign In</button>
     <div class="google-btn">
         <img src="https://www.google.com/favicon.ico" alt="Google" width="20" height="20">
@@ -86,3 +86,52 @@
 </div>
 </body>
 </html>
+<script>
+    // Check token on page load
+    window.onload = function() {
+        let token = localStorage.getItem('token');
+        if (token) {
+            // Decode token payload (simplified, base64 decode without validation)
+            let payload = JSON.parse(atob(token.split('.')[1]));
+            let role = payload.role;
+
+            // Redirect based on role
+            if (role === 'admin') {
+                window.location.href = 'adminHome.html';
+            } else {
+                window.location.href = 'userHome.html';
+            }
+        }
+    }
+
+    function register() {
+        let email = document.getElementById("email").value;
+        let password = document.getElementById("password").value;
+
+        let data = { "email": email, "password": password };
+
+        fetch('http://localhost:8080/api/users', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Network response was not OK: ' + response.statusText);
+            return response.json();
+        })
+        .then(user => {
+            console.log('User saved:', user);
+            localStorage.setItem('token', user.token);
+            alert('Registration successful! Redirecting...');
+            if (user.role === 'admin') {
+                window.location.href = 'adminHome.html';
+            } else {
+                window.location.href = 'userHome.html';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error: ' + error.message);
+        });
+    }
+</script>
