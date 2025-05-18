@@ -16,7 +16,15 @@ public class UserOrder {
     private String filePath;
     private String filamentType;
     private String filamentColor;
-    private int completion = 0;
+
+    // Progress values:
+    // 1 - Payment successful
+    // 2 - Order Prepared
+    // 3 - Shipping
+    // 4 - Completed
+    private int completion = 1;
+
+    private boolean completed = false;
 
     public UserOrder() {}
 
@@ -25,13 +33,11 @@ public class UserOrder {
         this.filePath = filePath;
         this.filamentType = filamentType;
         this.filamentColor = filamentColor;
-        this.completion = 0;
+        this.completion = 1;  // or 0 if you'd rather let admin move it to step 1
+        this.completed = false;
     }
 
     // Getters and setters
-    public int getCompletion() { return completion; }
-    public void setCompletion(int completion) { this.completion = completion; }
-
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -46,4 +52,10 @@ public class UserOrder {
 
     public String getFilamentColor() { return filamentColor; }
     public void setFilamentColor(String filamentColor) { this.filamentColor = filamentColor; }
+
+    public int getCompletion() { return completion; }
+    public void setCompletion(int completion) { this.completion = completion; }
+
+    public boolean isCompleted() { return completed; }
+    public void setCompleted(boolean completed) { this.completed = completed; }
 }

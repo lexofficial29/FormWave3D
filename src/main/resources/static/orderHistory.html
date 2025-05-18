@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FormWave3D</title>
     <style>
         body {
@@ -13,64 +13,76 @@
             display: flex;
             min-height: 100vh;
         }
+
         .sidebar {
             width: 200px;
             background-color: #fff;
             padding: 20px;
             border-right: 1px solid #ddd;
         }
-        .content {
-            flex: 1;
-            padding: 40px;
-            background-color: white;
-            text-align: center;
-        }
+
         .sidebar a {
             display: block;
             margin: 10px 0;
             color: #000;
             text-decoration: none;
         }
+
         .sidebar a.active {
             background-color: #ddd;
         }
+
+        .content {
+            flex: 1;
+            padding: 40px;
+            background-color: white;
+            text-align: center;
+        }
+
+        .order-card {
+            border: 1px solid #ccc;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            background-color: #f9f9f9;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .progress {
+            width: 80%;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .progress div {
+            height: 10px;
+            background-color: green;
+            width: 25%;
+            transition: width 0.3s ease-in-out;
+        }
+
+        .status {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+
+        .status div {
+            padding: 5px;
+            border: 1px solid #ccc;
+            font-size: 0.85rem;
+        }
+
         button {
             padding: 10px;
             background-color: #000;
             color: white;
             border: none;
             cursor: pointer;
-            width: 100%;
-            margin-top: 20px;
-        }
-        .order-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 20px 0;
-            padding: 20px;
-            border: 1px solid #ddd;
-            max-width: 600px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-        .order-image {
-            width: 100px;
-            height: 100px;
-            background-color: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
-            margin-right: 20px;
-        }
-        .order-details {
-            text-align: left;
-        }
-        .order-details button {
-            width: auto;
-            padding: 5px 10px;
-            margin-top: 10px;
         }
     </style>
 </head>
@@ -80,31 +92,81 @@
     <a href="userHome.html">Home</a>
     <a href="orderHistory.html" class="active">Order History</a>
     <a href="newOrder.html">New Order</a>
-    <button onclick="window.location.href='index.html'">Log out</button>
+    <button id="logoutBtn">Log out</button>
 </div>
+
 <div class="content">
     <h1>Order History</h1>
-    <div class="order-item">
-        <div class="order-image">Image Placeholder</div>
-        <div class="order-details">
-            <p>21/04/2025</p>
-            <button>Show details</button>
-        </div>
-    </div>
-    <div class="order-item">
-        <div class="order-image">Image Placeholder</div>
-        <div class="order-details">
-            <p>14/03/2025</p>
-            <button>Show details</button>
-        </div>
-    </div>
-    <div class="order-item">
-        <div class="order-image">Image Placeholder</div>
-        <div class="order-details">
-            <p>20/12/2024</p>
-            <button>Show details</button>
-        </div>
-    </div>
+    <div id="ordersContainer"></div>
 </div>
+
+<script>
+    window.onload = function () {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            window.location.href = "/";
+            return;
+        }
+
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        const userId = payload.id;
+
+        fetch(`/api/orders/user/${userId}`, {
+            headers: {
+                'Authorization': 'Bearer ' + token
+            }
+        })
+            .then(res => res.json())
+            .then(orders => {
+                const container = document.getElementById('ordersContainer');
+
+                if (!orders.length) {
+                    container.innerHTML = "<p>No orders found.</p>";
+                    return;
+                }
+
+                orders.forEach(order => {
+                    const card = document.createElement('div');
+                    card.classList.add('order-card');
+
+                    const statusLabels = [
+                        "Payment successful",
+                        "Order Prepared",
+                        "Shipping",
+                        "Order completed"
+                    ];
+                    const progressPercent = order.completion * 25;
+
+                    card.innerHTML = `
+              <h3>Order #${order.id}</h3>
+              <p><strong>Filament Type:</strong> ${order.filamentType}</p>
+              <p><strong>Color:</strong> ${order.filamentColor}</p>
+
+              <div class="progress">
+                <div style="width: ${progressPercent}%"></div>
+              </div>
+              <div class="status">
+                ${statusLabels
+                        .map((label, idx) =>
+                            `<div>${label}${order.completion > idx ? " ✓" : ""}</div>`
+                        )
+                        .join('')}
+              </div>
+              <hr />
+            `;
+                    container.appendChild(card);
+                });
+            })
+            .catch(err => {
+                console.error("Failed to load orders:", err);
+                document.getElementById('ordersContainer').innerHTML = "<p>Error loading orders.</p>";
+            });
+    };
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.clear();
+        window.location.href = 'index.html';
+    });
+</script>
 </body>
 </html>

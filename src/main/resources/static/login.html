@@ -78,10 +78,6 @@
   <button onclick="login()">Sign In</button>
   <p>Forgot password?</p>
   <button class="secondary" onclick="window.location.href='registration.html'">Or Sign Up</button>
-  <div class="google-btn">
-    <img src="https://www.google.com/favicon.ico" alt="Google" width="20" height="20">
-    <span>Google</span>
-  </div>
   <p>By clicking continue, you agree to our Terms of Service and Privacy Policy</p>
 </div>
 </body>
@@ -114,6 +110,7 @@
     })
     .then(user => {
       localStorage.setItem('token', user.token);
+      localStorage.setItem('userEmail', user.email);
       Notiflix.Loading.remove();
       Notiflix.Notify.success('Login successful! Redirecting...');
 

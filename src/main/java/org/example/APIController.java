@@ -1,12 +1,16 @@
 package org.example;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +29,80 @@ public class APIController {
 
     @Autowired
     private FileStorageService fileStorageService;
+
+    @GetMapping("/admin/orders")
+    public ResponseEntity<?> getAllOrders(@RequestHeader("Authorization") String authHeader) {
+        String token = authHeader.replace("Bearer ", "");
+        String email = jwtUtil.extractUsername(token);
+        User user = userRepository.findByEmail(email);
+
+        if (user == null || !user.getRole().equals("admin")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
+        }
+
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users); // includes orders inside each user
+    }
+    @PutMapping("/admin/order/{userId}/{orderIndex}/progress")
+    public ResponseEntity<?> updateOrderProgress(
+            @RequestHeader("Authorization") String authHeader,
+            @PathVariable Long userId,
+            @PathVariable int orderIndex
+    ) {
+        String token = authHeader.replace("Bearer ", "");
+        String email = jwtUtil.extractUsername(token);
+        User admin = userRepository.findByEmail(email);
+
+        if (admin == null || !admin.getRole().equals("admin")) {
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Access denied");
+        }
+
+        User user = userRepository.findById(userId).orElse(null);
+        if (user == null || orderIndex >= user.getOrders().size()) {
+            return ResponseEntity.badRequest().body("Invalid user or order index");
+        }
+
+        UserOrder order = user.getOrders().get(orderIndex);
+        if (order.getCompletion() < 4) {
+            order.setCompletion(order.getCompletion() + 1);
+            if (order.getCompletion() == 4) {
+                order.setCompleted(true);
+            }
+            userRepository.save(user);
+        }
+
+        return ResponseEntity.ok("Progress updated");
+    }
+
+    @GetMapping("/orders/user/{userId}")
+    public ResponseEntity<?> getUserOrders(@PathVariable Long userId) {
+        User user = userRepository.findById(userId)
+                .orElse(null);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        return ResponseEntity.ok(user.getOrders());
+    }
+
+    @GetMapping("/files/{filename:.+}")
+    public ResponseEntity<Resource> serveFile(@PathVariable String filename) {
+        try {
+            Path filePath = Paths.get("uploads").toAbsolutePath().resolve(filename).normalize();
+            Resource resource = new UrlResource(filePath.toUri());
+
+            if (!resource.exists()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok()
+                    .header("Content-Disposition", "inline; filename=\"" + resource.getFilename() + "\"")
+                    .body(resource);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
 
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User user) {

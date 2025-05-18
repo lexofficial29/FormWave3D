@@ -7,11 +7,15 @@
     <style>
         body {
             font-family: Arial, sans-serif;
+            font-size: 18px;
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
             display: flex;
             min-height: 100vh;
+        }
+        h1 {
+            font-size: 32px;
         }
         .sidebar {
             width: 200px;
@@ -21,7 +25,7 @@
         }
         .content {
             flex: 1;
-            padding: 40px;
+            padding: 10px;
             background-color: white;
             display: flex;
             flex-direction: column;
@@ -42,7 +46,11 @@
             width: 100%;
         }
         .text-section {
-            max-width: 600px;
+            max-width: 1000px;
+        }
+        .text-section p {
+            font-size: 30px;
+            line-height: 1.6;
         }
         .image-section {
             max-width: 400px;
@@ -50,14 +58,11 @@
             flex-direction: column;
             gap: 20px;
         }
-        .image-placeholder {
+        .image-section img {
             width: 100%;
-            height: 200px;
-            background-color: #ddd;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: #666;
+            height: auto;
+            border: 1px solid #ccc;
+            border-radius: 8px;
         }
         .sidebar a {
             display: block;
@@ -95,8 +100,8 @@
             <p>At FormWave3D, we make 3D printing accessible and hassle-free. Whether you're a designer, engineer, or hobbyist, simply upload your STL files, select your material, and get an instant quote. Our seamless platform connects you with high-quality, on-demand printing services — with real-time order tracking and fast delivery. Start creating today, and turn your ideas into tangible, custom-made products.</p>
         </div>
         <div class="image-section">
-            <div class="image-placeholder">Image 1 Placeholder</div>
-            <div class="image-placeholder">Image 2 Placeholder</div>
+            <img src="https://www.makerbot.com/wp-content/uploads/2023/09/Comparison-chart-sketch-large.png">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO6Q_gniJJNBfmch1ToaG01RwbBex-NyrOYA&s">
         </div>
     </div>
 </div>

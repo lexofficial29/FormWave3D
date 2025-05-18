@@ -11,6 +11,9 @@
       padding: 0;
       background-color: #f4f4f4;
     }
+    h1 {
+      font-size: 32px;
+    }
     .main-container {
       display: flex;
       min-height: 100vh;
@@ -44,22 +47,17 @@
       width: 100%;
     }
     .text-section {
-      max-width: 600px;
+      max-width: 1000px;
+    }
+    .text-section p {
+      font-size: 30px;
+      line-height: 1.6;
     }
     .image-section {
       max-width: 400px;
       display: flex;
       flex-direction: column;
       gap: 20px;
-    }
-    .image-placeholder {
-      width: 100%;
-      height: 200px;
-      background-color: #ddd;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #666;
     }
     .sidebar a {
       display: block;
@@ -82,11 +80,11 @@
 <body>
 <div class="main-container">
   <div class="sidebar">
-    <h2>FormWave3D<br>User123</h2>
+    <h2>FormWave3D<br><span id="username">Loading...</span></h2>
     <a href="userHome.html" class="active">Home</a>
     <a href="orderHistory.html">Order History</a>
     <a href="newOrder.html">New Order</a>
-    <button onclick="window.location.href='index.html'">Log out</button>
+    <button id="logoutBtn">Log out</button>
   </div>
   <div class="content">
     <div class="title-section">
@@ -97,11 +95,31 @@
         <p>At FormWave3D, we make 3D printing accessible and hassle-free. Whether you're a designer, engineer, or hobbyist, simply upload your STL files, select your material, and get an instant quote. Our seamless platform connects you with high-quality, on-demand printing services — with real-time order tracking and fast delivery. Start creating today, and turn your ideas into tangible, custom-made products.</p>
       </div>
       <div class="image-section">
-        <div class="image-placeholder">Image 1 Placeholder</div>
-        <div class="image-placeholder">Image 2 Placeholder</div>
+        <img src="https://www.makerbot.com/wp-content/uploads/2023/09/Comparison-chart-sketch-large.png">
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQO6Q_gniJJNBfmch1ToaG01RwbBex-NyrOYA&s">
       </div>
     </div>
   </div>
 </div>
 </body>
 </html>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const email = localStorage.getItem("userEmail");
+    const usernameElement = document.getElementById("username");
+
+    if (email && usernameElement) {
+      const username = email.split("@")[0];
+      usernameElement.textContent = username;
+    } else {
+      usernameElement.textContent = "";
+    }
+
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.clear();
+      window.location.href = "index.html";
+    });
+  });
+
+</script>
